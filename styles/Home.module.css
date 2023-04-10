@@ -1,3 +1,13 @@
+.smiley {
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 50%;
+  background-color: orange;
+  z-index: 999;
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -127,6 +137,9 @@
 
 /* Mobile */
 @media (max-width: 700px) {
+  .smiley {
+    background-color: greenyellow;
+  }
   .content {
     padding: 4rem;
   }
@@ -204,6 +217,9 @@
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
+  .smiley {
+    background-color: blueviolet;
+  }
   .grid {
     grid-template-columns: repeat(2, 50%);
   }
