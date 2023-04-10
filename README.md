@@ -1,14 +1,14 @@
-This is a [Docker]ized(https://www.docker.com/) [Next.js](https://nextjs.org/) expense tracker demo project.
+This is a [Dockerized](https://www.docker.com/) [Next.js](https://nextjs.org/) expense tracker demo project.
 
 ## Getting Started
 
 First, clone the repository
 
 ```bash
-git clone .....
+git clone https://github.com/cantomris/next13-expense-tracker.git
 ```
 
-Second, run the Docker daemon on your PC and run this command;
+Second, run the Docker daemon on your PC and run this command in your terminal;
 
 ```bash
 docker-compose up --build --force-recreate
@@ -16,7 +16,7 @@ docker-compose up --build --force-recreate
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Even in Docker you can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Now you can edit the pages. Even the project runs from the Docker container, the page auto-updates as you edit the file.
 
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
