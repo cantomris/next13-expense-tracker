@@ -1,6 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-900 text-white max-w-screen-xl mx-auto p-10
+    
+  }
+  button {
+    @apply hover:scale-105 transition-all duration-100
+  }
+
+  @layer utilities {
+    .btn {
+      @apply px-4 py-2 text-sm capitalize rounded-xl
+    }
+    .btn-blue {
+      @apply border bg-blue-400 border-blue-100 text-white
+    }
+    .btn-darkgreen {
+      @apply text-green-700 bg-gray-400
+    }
+    .btn-olivegrey {
+      @apply text-gray-400 bg-green-700
+    }
+    .btn-primary {
+      @apply border bg-slate-700 border-slate-700 text-lime-400
+    }
+    .btn-primary-outline {
+      @apply border border-lime-400 text-lime-400
+    }
+  }
+}
 /* 
 :root {
   --max-width: 1100px;
