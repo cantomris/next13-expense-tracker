@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "json-server --watch database/db.json --port 3001 & next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,6 +13,7 @@
     "@types/react": "18.0.34",
     "@types/react-dom": "18.0.11",
     "chart.js": "^4.2.1",
+    "json-server": "^0.17.3",
     "next": "13.3.0",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",

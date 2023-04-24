@@ -1,45 +1,26 @@
 import Navigation from '@/components/navigation';
+import { useState } from "react";
+
+// Charts
 import { Chart as ChartJs, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from "react-chartjs-2";
+
+// Utils
 import { currencyFormatter } from '@/lib/utils';
+
+// Components
 import ExpenseCategoryItem from '@/components/ExpenseCategoryItem';
-import { useState } from "react";
-import Modal from '@/components/Modal';
+import AddIncomeModal from '@/components/Modals/AddIncomeModal';
 import Head from 'next/head'
+import AddExpenseModal from '@/components/Modals/AddExpenseModal';
 
 ChartJs.register(ArcElement, Tooltip, Legend);
 
-const DUMMY_DATA = [
-  {
-    id: 1,
-    title: "Entertainment",
-    color: "yellow",
-    total: 500
-  },
-  {
-    id: 2,
-    title: "Education",
-    color: "green",
-    total: 1000
-  },
-  {
-    id: 3,
-    title: "Personal",
-    color: "pink",
-    total: 400
-  },
-  {
-    id: 4,
-    title: "Food",
-    color: "white",
-    total: 1400
-  }
-]
-export default function Home() {
+export default function Home({data}) {
 
-  const [showAddExpensesModal, setShowAddExpensesModal] = useState(false);
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+
   return (
     <>
       <Head>
@@ -50,25 +31,10 @@ export default function Home() {
       </Head>
 
       {/* Add Expense Modal } */}
-      <Modal show={showAddExpensesModal} onClose={setShowAddExpensesModal}>
-        
-      </Modal>
+
       {/* Add Income Modal } */}
-      <Modal show={showAddIncomeModal} onClose={setShowAddIncomeModal}>
-        <form className="input-group" action="">
-          <div className='input-group'>
-            <label htmlFor="amount">Income Amount</label>
-            <input name="amount" type="number" min={0.01} step={0.01} placeholder="Enter income amount" required/>
-          </div>
-
-          <div className='input-group'>
-            <label htmlFor="description">Description</label>
-            <input name="description" type="text" placeholder="Enter income description" required/>
-          </div>
-
-          <button type="submit" className='btn btn-primary'>Add entry</button>
-        </form>
-      </Modal>
+      <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal}/>
+      <AddExpenseModal show={showAddExpenseModal} onClose={setShowAddIncomeModal}/>
         
       <Navigation/>
 
@@ -78,20 +44,21 @@ export default function Home() {
       </section>
 
       <section className='flex items-center gap-2 py-3'>
-        <button onClick={() => setShowAddExpensesModal(true)} className='btn btn-primary'>+ Expenses</button>
+        <button onClick={() => setShowAddExpenseModal(true)} className='btn btn-primary'>+ Expenses</button>
         <button onClick={() => setShowAddIncomeModal(true)} className='btn btn-primary-outline'>+ Income</button>
       </section>
 
-      {/* Expenses */}
+      {/* Expenses List */}
       <section className='py-6'>
         <h3 className='text-2xl'>My Expenses</h3>
         <div className='input-group mt-6'>
           {/* Expenses Item */}
-          {DUMMY_DATA.map(expense => {
+          {data.expense_data.map((expense: { categoryId: null | undefined; color: any; category: any; total: any; }) => {
             return (
             <ExpenseCategoryItem
+              key={expense.categoryId}
               color={expense.color}
-              title={expense.title}
+              title={expense.category}
               total={expense.total}/>
           )})}
         </div>
@@ -102,12 +69,12 @@ export default function Home() {
         <h3 className='text-2xl'>Stats</h3>
         <div className='w-1/2 mx-auto'>
           <Doughnut data={{
-            labels: DUMMY_DATA.map(expense => expense.title),
+            labels: data.expense_data.map((expense: { category: String; }) => expense.category),
             datasets: [
               {
                 label: "Expenses",
-                data: DUMMY_DATA.map(expense => expense.total),
-                backgroundColor: DUMMY_DATA.map(expense => expense.color),
+                data: data.expense_data.map((expense: { total: any; }) => expense.total),
+                backgroundColor: data.expense_data.map((expense: { color: string }) => expense.color),
                 borderColor: ["#18181b"],
                 borderWidth: 5
               }
@@ -117,4 +84,12 @@ export default function Home() {
       </section>
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const req = await fetch('http://localhost:3000/api/data')
+  const data = await req.json();
+  return {
+    props: {data}
+  }
 }

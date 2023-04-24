@@ -15,5 +15,6 @@ COPY lib ./lib
 COPY public ./public
 COPY styles ./styles
 COPY components ./components
+COPY database ./database
 
 CMD ["npm", "run", "dev"]

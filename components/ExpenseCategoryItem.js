@@ -8,7 +8,7 @@ function ExpenseCategoryItem({color, title, total}) {
           <div className='w-[25px] h-[25px] rounded-full' style={{backgroundColor: color}}/>
           <h4 className='capitalize'>{title}</h4>
         </div>
-        <p>{currencyFormatter(total)}</p>
+        { total && <p>{currencyFormatter(total)}</p> }
       </div>
     </button>
   )

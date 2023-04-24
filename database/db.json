@@ -1,0 +1,54 @@
+{
+  "expense_data" : [
+    {
+      "id": 1,
+      "title": "Entertainment",
+      "color": "yellow",
+      "total": 1000
+    },
+    {
+      "id": 2,
+      "title": "Education",
+      "color": "blue",
+      "total": 500
+    },
+    {
+      "id": 3,
+      "title": "Personal",
+      "color": "pink",
+      "total": 2000
+    },
+    {
+      "id": 4,
+      "title": "Rent and bills",
+      "color": "white",
+      "total": 12000
+    },
+    {
+      "id": 5,
+      "title": "House Supplies",
+      "color": "green",
+      "total": 5000
+    }
+  ],
+  "income_data" : [
+    {
+      "id": 1,
+      "amount": 20000,
+      "description": "Pay check",
+      "createdAt": "Wed 05 April 2023"
+    },
+    {
+      "id": 2,
+      "amount": 2000,
+      "description": "Freelance Job",
+      "createdAt": "Mon 10 April 2023"
+    },
+    {
+      "id": 3,
+      "amount": 400,
+      "description": "John's loan payback",
+      "createdAt": "Fri 14 April 2023"
+    }
+  ]
+}
