@@ -5,13 +5,16 @@ import ExpenseCategoryItem from "../ExpenseCategoryItem";
 
 function AddExpenseModal({show, onClose}) {
 
-  const descriptionRef = useRef<HTMLInputElement>("");
-  const amountRef = useRef<HTMLInputElement>("");
-  const { expenses, addExpenseItem, removeExpenseItem } = useContext(financeContext);
+  const descriptionRef = useRef<HTMLInputElement>();
+  const amountRef = useRef<HTMLInputElement>();
+  const titleRef = useRef<HTMLInputElement>();
+  const colorRef = useRef<HTMLInputElement>();
+  const { expenses, addExpenseItem, removeExpenseItem, addCategory } = useContext(financeContext);
 
   const [expenseAmount, setExpenseAmount] = useState("")
   const [expenseDescription, setExpenseDescription] = useState("")
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [showAddExpenseCategory, setShowAddExpenseCategory] = useState(false)
 
   // Handler functions
   const addExpenseHandler = async (e: { preventDefault: () => void; }) => {
@@ -32,13 +35,11 @@ function AddExpenseModal({show, onClose}) {
     } catch(error: any) {
       console.log(error.message); 
     }
-    console.log(newExpense)
     setExpenseAmount("")
     setExpenseDescription("")
     setSelectedCategory(null),
     onClose()
   }
-
 
   const deleteExpenseEntryHandler = async (expenseId) => {
     try{
@@ -48,6 +49,21 @@ function AddExpenseModal({show, onClose}) {
     }
   }
 
+  const addCategoryHandler = async () => {
+    const title = titleRef.current?.value
+    const color = colorRef.current?.value
+
+    const newCategory = {
+      category: title,
+      color: color,
+      total: +expenseAmount,
+      expense : {
+        description: expenseDescription,
+        amount: +expenseAmount,
+      }
+    }
+    await addCategory(newCategory)
+  }
   return (
     <Modal show={show} onClose={onClose}>
         <form onSubmit={addExpenseHandler} className="input-group" action="">
@@ -63,7 +79,20 @@ function AddExpenseModal({show, onClose}) {
         </form>
 
         <div className='flex flex-col mt-6'>
-          <h3 className='text-2xl font-bold'>Select Category</h3>
+          <div className="flex items-center justify-between">
+            <h3 className='text-2xl font-bold'>Select Category</h3>
+            <button className="text-lime-400" onClick={() => {setShowAddExpenseCategory(true)}}>+ New Category</button>
+          </div>
+          {
+            expenseAmount > 0 && expenseDescription && showAddExpenseCategory && 
+              <div className="flex items-center justify-between mt-4">
+                <input type="text" placeholder="Enter Title" required ref={titleRef}/>
+                <label htmlFor="">Pick Color</label>
+                <input type="color" ref={colorRef} className="w-24 h-10"/>
+                <button className="btn btn-primary-outline" onClick={addCategoryHandler}>Create</button>
+                <button className="btn btn-blue" onClick={() => {setShowAddExpenseCategory(false)}}>Cancel</button>
+              </div>
+          }
           <div className="flex flex-row flex-wrap gap-3 mt-6">
           {
             expenseAmount > 0 && (
