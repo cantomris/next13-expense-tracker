@@ -63,6 +63,9 @@ function AddExpenseModal({show, onClose}) {
       }
     }
     await addCategory(newCategory)
+    setExpenseAmount("")
+    setExpenseDescription("")
+    setShowAddExpenseCategory(false)
   }
   return (
     <Modal show={show} onClose={onClose}>
