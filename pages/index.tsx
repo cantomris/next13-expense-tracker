@@ -1,5 +1,5 @@
 import Navigation from '@/components/navigation';
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // Charts
 import { Chart as ChartJs, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -13,13 +13,30 @@ import ExpenseCategoryItem from '@/components/ExpenseCategoryItem';
 import AddIncomeModal from '@/components/Modals/AddIncomeModal';
 import Head from 'next/head'
 import AddExpenseModal from '@/components/Modals/AddExpenseModal';
+import { financeContext } from '@/lib/store/financeStore';
 
 ChartJs.register(ArcElement, Tooltip, Legend);
 
-export default function Home({data}) {
+export default function Home(/* {data} */) {
 
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const [balance, setBalance] = useState(0)
+
+  const { expenses, incomes } = useContext(financeContext)
+
+  useEffect(() => {
+    const newBalance = incomes.reduce((total, income) => {
+      return total + income.amount
+    }, 0) - expenses.reduce((total, expense) => {
+      return total + expense.total
+    }, 0)
+    setBalance(newBalance)
+  }, [expenses, incomes])
+
+  const onClick = () => {
+    alert("Main page category selector activated")
+  }
 
   return (
     <>
@@ -31,16 +48,16 @@ export default function Home({data}) {
       </Head>
 
       {/* Add Expense Modal } */}
+      <AddExpenseModal show={showAddExpenseModal} onClose={setShowAddExpenseModal}/>
 
       {/* Add Income Modal } */}
       <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal}/>
-      <AddExpenseModal show={showAddExpenseModal} onClose={setShowAddIncomeModal}/>
         
       <Navigation/>
 
       <section className='py-3'>
         <small className='text-gray-400 text-md'>My Balance</small>
-        <h2 className='text-4xl font-bold'>{currencyFormatter(100000)}</h2>
+        <h2 className='text-4xl font-bold'>{currencyFormatter(balance)}</h2>
       </section>
 
       <section className='flex items-center gap-2 py-3'>
@@ -53,7 +70,7 @@ export default function Home({data}) {
         <h3 className='text-2xl'>My Expenses</h3>
         <div className='input-group mt-6'>
           {/* Expenses Item */}
-          {data.expense_data.map((expense: { categoryId: null | undefined; color: any; category: any; total: any; }) => {
+          {expenses.map((expense: { categoryId: null | undefined; color: any; category: any; total: any; }) => {
             return (
             <ExpenseCategoryItem
               key={expense.categoryId}
@@ -69,12 +86,12 @@ export default function Home({data}) {
         <h3 className='text-2xl'>Stats</h3>
         <div className='w-1/2 mx-auto'>
           <Doughnut data={{
-            labels: data.expense_data.map((expense: { category: String; }) => expense.category),
+            labels: expenses.map((expense: { category: String; }) => expense.category),
             datasets: [
               {
                 label: "Expenses",
-                data: data.expense_data.map((expense: { total: any; }) => expense.total),
-                backgroundColor: data.expense_data.map((expense: { color: string }) => expense.color),
+                data: expenses.map((expense: { total: any; }) => expense.total),
+                backgroundColor: expenses.map((expense: { color: string }) => expense.color),
                 borderColor: ["#18181b"],
                 borderWidth: 5
               }
@@ -86,10 +103,10 @@ export default function Home({data}) {
   )
 }
 
-export async function getServerSideProps() {
-  const req = await fetch('http://localhost:3000/api/data')
-  const data = await req.json();
-  return {
-    props: {data}
-  }
-}
+// export async function getServerSideProps() {
+//   const req = await fetch('http://localhost:3000/api/data')
+//   const data = await req.json();
+//   return {
+//     props: {data}
+//   }
+// }

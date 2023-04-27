@@ -16,15 +16,18 @@ function AddIncomeModal({show, onClose}) {
   const addIncomeHandler = async (e: { preventDefault: () => void; }) => {
     e.preventDefault()
     const newIncome = {
-      amount: amountRef.current.value,
+      id: Math.random().toString(16).slice(2),
+      amount: +amountRef.current.value,
       description: descriptionRef.current.value,
       createdAt: new Date().toDateString()
     }
+    console.log(incomes);
+    
 
     try {
       await addIncomeItem(newIncome)
-      descriptionRef.current.value = "";
-      amountRef.current.value = "";
+      // descriptionRef.current.value = "";
+      // amountRef.current.value = "";
 
     } catch(error) {
       console.log(error.message);
