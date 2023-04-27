@@ -17,21 +17,16 @@ function AddExpenseModal({show, onClose}) {
   const addExpenseHandler = async (e: { preventDefault: () => void; }) => {
     e.preventDefault()
     const category = expenses.find(e => e.categoryId == selectedCategory)
-
+debugger
     const newExpense = {
       id: category.categoryId,
-      color: category.color,
-      category : category.category,
-      total : category.total + +expenseAmount,
-      expenses : [
-        ...category.expenses, {
+      expense : {
           id: Math.random().toString(16).slice(2),
-          amount: +amountRef.current.value,
           description: descriptionRef.current.value,
-          createdAt: new Date().toDateString()
+          createdAt: new Date().toDateString(),
+          amount: +amountRef.current.value,
         }
-      ]
-      
+        
     }
 
     try {
