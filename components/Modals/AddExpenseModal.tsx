@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import Modal from "../Modal";
 import { financeContext } from "@/lib/store/financeStore";
-import ExpenseCategoryItem from "../ExpenseCategoryItem";
+import { toast } from "react-toastify"
 
 function AddExpenseModal({show, onClose}) {
 
@@ -9,7 +9,7 @@ function AddExpenseModal({show, onClose}) {
   const amountRef = useRef<HTMLInputElement>();
   const titleRef = useRef<HTMLInputElement>();
   const colorRef = useRef<HTMLInputElement>();
-  const { expenses, addExpenseItem, removeExpenseItem, addCategory } = useContext(financeContext);
+  const { categories, addExpenseItem, removeExpenseItem, addCategory } = useContext(financeContext);
 
   const [expenseAmount, setExpenseAmount] = useState("")
   const [expenseDescription, setExpenseDescription] = useState("")
@@ -19,21 +19,23 @@ function AddExpenseModal({show, onClose}) {
   // Handler functions
   const addExpenseHandler = async (e: { preventDefault: () => void; }) => {
     e.preventDefault()
-    const category = expenses.find(e => e.categoryId == selectedCategory)
+    const category = categories.find(e => e.categoryId == selectedCategory)
     const newExpense = {
       id: category.categoryId,
       expense : {
           id: Math.random().toString(16).slice(2),
           description: expenseDescription,
-          createdAt: new Date().toDateString(),
+          createdAt: new Date().toDateString(), 
           amount: +expenseAmount,
         }
     }
 
     try {
       await addExpenseItem(newExpense)
+      toast.success(`New expense added!`)
     } catch(error: any) {
       console.log(error.message); 
+      toast.error(error)
     }
     setExpenseAmount("")
     setExpenseDescription("")
@@ -46,6 +48,7 @@ function AddExpenseModal({show, onClose}) {
       await removeExpenseItem(expenseId)
     } catch(error: any) {
       console.log(error.message);
+      toast.error(error)
     }
   }
 
@@ -58,14 +61,24 @@ function AddExpenseModal({show, onClose}) {
       color: color,
       total: +expenseAmount,
       expense : {
+        id: Math.random().toString(16).slice(2),
         description: expenseDescription,
         amount: +expenseAmount,
+        createdAt: new Date().toDateString(), 
       }
     }
-    await addCategory(newCategory)
-    setExpenseAmount("")
-    setExpenseDescription("")
-    setShowAddExpenseCategory(false)
+    try {
+      await addCategory(newCategory)
+      setExpenseAmount("")
+      setExpenseDescription("")
+      setShowAddExpenseCategory(false)
+      onClose()
+      toast.success(`${newCategory.category} category created!`)
+    } catch (error: any) {
+      console.log(error)
+      toast.error(error)
+      
+    }
   }
   return (
     <Modal show={show} onClose={onClose}>
@@ -99,7 +112,7 @@ function AddExpenseModal({show, onClose}) {
           <div className="flex flex-row flex-wrap gap-3 mt-6">
           {
             expenseAmount > 0 && (
-              expenses.map((category) => {
+              categories.map((category) => {
                 return (
                   <button key={category.categoryId} className='' onClick={() => setSelectedCategory(category.categoryId)}>
                     <div className='flex items-center justify-between px-4 py-4 bg-slate-700 rounded-3xl' style={{boxShadow: category.categoryId == selectedCategory ? "1px 1px 4px" : "none"}}>

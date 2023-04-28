@@ -3,6 +3,7 @@ import Modal from "../Modal";
 import { financeContext } from "@/lib/store/financeStore";
 import { currencyFormatter } from "@/lib/utils";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { toast } from 'react-toastify'
 
 function ViewExpenseModal({show, onClose, category}) {
   const {removeExpenseItem, deleteCategory } = useContext(financeContext)
@@ -15,14 +16,21 @@ function ViewExpenseModal({show, onClose, category}) {
         expenses: [...updatedItems],
         total: category.total - item.amount
       }
-      removeExpenseItem(updatedCategody, category.categoryId)
+      await removeExpenseItem(updatedCategody, category.categoryId)
+      toast.success(`Expense deleted!`)
     } catch (error) {
       console.log(error);
     }
   }
 
   const deleteCategoryHandler = async () => {
-    deleteCategory(category.categoryId)
+    try {
+      await deleteCategory(category.categoryId)
+      toast.success(`${category.category} deleted!`)
+    } catch (error) {
+      console.log(error);
+      
+    } 
   }
 
   return (
