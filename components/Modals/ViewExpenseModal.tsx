@@ -21,8 +21,8 @@ function ViewExpenseModal({show, onClose, category}) {
     }
   }
 
-  const deleteCategoryHandler = async (categoryId) => {
-    deleteCategory(categoryId)
+  const deleteCategoryHandler = async () => {
+    deleteCategory(category.categoryId)
   }
 
   return (
@@ -31,7 +31,7 @@ function ViewExpenseModal({show, onClose, category}) {
       <div className='flex flex-col items-start justify-between'>
         <div className="flex content-center justify-between w-[100%] my-4">
           <h3 className="text-2xl">Expense History</h3>
-          <button className="btn btn-blue" onClick={() => {deleteCategoryHandler(category.categoryId)}}>Delete All</button>
+          <button className="btn btn-blue" onClick={deleteCategoryHandler}>Delete All</button>
         </div>
         {
           category.expenses.map(expense => {
