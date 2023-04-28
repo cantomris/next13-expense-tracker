@@ -17,19 +17,19 @@ const DATA= {
         {
           id: 1,
           description: "Saturday night cinema",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 300
         },
         {
           id: 2,
           description: "Saturday brunch",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 400
         },
         {
-          id: 2,
+          id: 3,
           description: "Sunday dinner",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 600
         }
       ]
@@ -43,7 +43,7 @@ const DATA= {
         {
           id: 1,
           description: "Development Certification",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 500
         }
       ]
@@ -57,7 +57,7 @@ const DATA= {
         {
           id: 1,
           description: "New shaving machine",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 2000
         }
       ]
@@ -71,25 +71,25 @@ const DATA= {
         {
           id: 1,
           description: "Monthly rent",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 10000
         },
         {
           id: 2,
           description: "Electric bill",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 1400
         },
         {
           id: 3,
           description: "Water bill",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 300
         },
         {
           id: 4,
           description: "Gas bill",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 300
         },
 
@@ -104,19 +104,19 @@ const DATA= {
         {
           id: 1,
           description: "Weekly food supplies",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 2000
         },
         {
           id: 2,
           description: "Weekly food supplies",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 2000
         },
         {
-          id: 2,
+          id: 3,
           description: "Utilities",
-          createdAt: Date.now(),
+          createdAt: new Date().toDateString(),
           amount: 1000
         }
       ]

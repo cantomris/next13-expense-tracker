@@ -23,16 +23,16 @@ export default function Home(/* {data} */) {
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [balance, setBalance] = useState(0)
 
-  const { expenses, incomes } = useContext(financeContext)
+  const { categories, incomes } = useContext(financeContext)
 
   useEffect(() => {
     const newBalance = incomes.reduce((total, income) => {
       return total + income.amount
-    }, 0) - expenses.reduce((total, expense) => {
+    }, 0) - categories.reduce((total, expense) => {
       return total + expense.total
     }, 0)
     setBalance(newBalance)
-  }, [expenses, incomes])
+  }, [categories, incomes])
 
   const onClick = () => {
     alert("Main page category selector activated")
@@ -70,13 +70,11 @@ export default function Home(/* {data} */) {
         <h3 className='text-2xl'>My Expenses</h3>
         <div className='input-group mt-6'>
           {/* Expenses Item */}
-          {expenses.map((expense: { categoryId: null | undefined; color: any; category: any; total: any; }) => {
+          {categories.map((expense: { categoryId: null | undefined; color: any; category: any; total: any; }) => {
             return (
             <ExpenseCategoryItem
               key={expense.categoryId}
-              color={expense.color}
-              title={expense.category}
-              total={expense.total}/>
+              category={expense}/>
           )})}
         </div>
       </section>
@@ -86,12 +84,12 @@ export default function Home(/* {data} */) {
         <h3 className='text-2xl'>Stats</h3>
         <div className='w-1/2 mx-auto'>
           <Doughnut data={{
-            labels: expenses.map((expense: { category: String; }) => expense.category),
+            labels: categories.map((expense: { category: String; }) => expense.category),
             datasets: [
               {
                 label: "Expenses",
-                data: expenses.map((expense: { total: any; }) => expense.total),
-                backgroundColor: expenses.map((expense: { color: string }) => expense.color),
+                data: categories.map((expense: { total: any; }) => expense.total),
+                backgroundColor: categories.map((expense: { color: string }) => expense.color),
                 borderColor: ["#18181b"],
                 borderWidth: 5
               }
