@@ -5,7 +5,7 @@ import { currencyFormatter } from "@/lib/utils";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 function ViewExpenseModal({show, onClose, category}) {
-  const {removeExpenseItem } = useContext(financeContext)
+  const {removeExpenseItem, deleteCategory } = useContext(financeContext)
 
   const deleteExpenseItemHandler = async (item) => {
     try {
@@ -16,18 +16,23 @@ function ViewExpenseModal({show, onClose, category}) {
         total: category.total - item.amount
       }
       removeExpenseItem(updatedCategody, category.categoryId)
-
     } catch (error) {
       console.log(error);
-      
     }
+  }
+
+  const deleteCategoryHandler = async (categoryId) => {
+    deleteCategory(categoryId)
   }
 
   return (
     <Modal show={show} onClose={onClose}>
       <h3 className='text-center'>Detailed {category.category} Expenses</h3>
       <div className='flex flex-col items-start justify-between'>
-        <h3 className="my-4 text-2xl">Expense History</h3>
+        <div className="flex content-center justify-between w-[100%] my-4">
+          <h3 className="text-2xl">Expense History</h3>
+          <button className="btn btn-blue" onClick={() => {deleteCategoryHandler(category.categoryId)}}>Delete All</button>
+        </div>
         {
           category.expenses.map(expense => {
             return (
